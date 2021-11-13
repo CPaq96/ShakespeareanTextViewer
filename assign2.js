@@ -36,7 +36,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const playInfo = document.querySelector("#playInfo");
   const textSelect = document.querySelector("#text-select");
   const playText = document.querySelector("#PlayText");
-
+  
   sortListByName();
   updateList(list);
 
@@ -92,8 +92,24 @@ document.addEventListener("DOMContentLoaded", () => {
     show(textSelect);
     show(playText);
 
+    const id = e.target.dataset.id;
+    const play = localStorage.getItem(id);
+    if (!play) {
+      //fetch
+      fetch(`${api}?name=${id}`)
+        .then(resp => resp.json())
+        .then(data => {
+          localStorage.setItem(id, JSON.stringify(data));
+          displayPlay(localStorage.getItem(id));
+        })
+        .catch(error => alert(error));
+    } else {
+      displayPlay(play);
+      //update drop downs
+  
+      //display text
+    }
     
-
   })
 });
 
@@ -132,6 +148,10 @@ function updateList(parent){
     
     parent.appendChild(li);
   })
+}
+
+function displayPlay(play){
+  alert(play);
 }
 
 function show(element) {
