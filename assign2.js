@@ -23,6 +23,19 @@ const plays = JSON.parse(play_list);
 document.addEventListener("DOMContentLoaded", () => {
   const list = document.querySelector("#playList ul");
   const sortMethod = document.querySelector("#sort_method");
+  const title = document.querySelector("#Synopsis h2");
+  const synop = document.querySelector("#Synopsis p");
+  const viewBtn = document.querySelector("#btnViewText");
+  const date = document.querySelector("#DoC");
+  const genre = document.querySelector("#genre");
+  const wiki = document.querySelector("#wiki");
+  const gutenberg = document.querySelector("#gutenberg");
+  const shakespeare_org = document.querySelector("#shakespeareOrg");
+  const description = document.querySelector("#description");
+  const synopsisInfo = document.querySelector("#Synopsis");
+  const playInfo = document.querySelector("#playInfo");
+  const textSelect = document.querySelector("#text-select");
+  const playText = document.querySelector("#PlayText");
 
   sortListByName();
   updateList(list);
@@ -38,8 +51,50 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   })
 
+  // Display play infor on text
+  list.addEventListener("click", (e) => {
+    e.stopPropagation();
+    if(e.target.nodeName == "LI") {
+      list.querySelectorAll("li").forEach(li => {li.classList.remove("active")});
+      e.target.classList.add("active");
 
-  
+      show(synopsisInfo);
+      show(playInfo);
+      hide(textSelect);
+      hide(playText);
+
+      const match = plays.find(p => p.id === e.target.dataset.id);
+      
+      // Populate column 2
+      title.textContent = match.title;
+      synop.textContent = match.synopsis;
+      if(match.filename != "") {
+        show(viewBtn);
+        viewBtn.setAttribute("data-id", e.target.dataset.id);
+      } else {
+        hide(viewBtn);
+      }
+
+      // Populate column 3
+      date.textContent = match.likelyDate;
+      genre.textContent = match.genre;
+      wiki.textContent = match.wiki;
+      gutenberg.textContent = match.gutenberg;
+      shakespeare_org.textContent = match.shakespeareOrg;
+      description.textContent = match.desc;
+
+    }
+  })
+
+  viewBtn.addEventListener("click", (e) => {
+    hide(synopsisInfo);
+    hide(playInfo);
+    show(textSelect);
+    show(playText);
+
+    
+
+  })
 });
 
 // Sorts plays alphabetically by title
@@ -49,12 +104,8 @@ function sortListByName(){
     let fa = a.title.toLowerCase(),
         fb = b.title.toLowerCase();
 
-    if (fa < fb) {
-      return -1;
-    }
-    if (fa > fb) {
-      return 1;
-    }
+    if (fa < fb) return -1; 
+    if (fa > fb) return 1; 
     return 0;
   });
 }
@@ -81,4 +132,14 @@ function updateList(parent){
     
     parent.appendChild(li);
   })
+}
+
+function show(element) {
+  element.classList.remove("hidden");
+  element.classList.add("visible");
+}
+
+function hide(element) {
+  element.classList.remove("visible");
+  element.classList.add("hidden");
 }

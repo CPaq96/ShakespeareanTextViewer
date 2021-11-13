@@ -50,7 +50,7 @@ input {
 }
 main {
   display: grid;
-  grid-template-columns: 4fr 3fr 9fr;
+  grid-template-columns: 4.5fr 3fr 9fr;
   grid-gap: 5px;
 }
 aside {
@@ -88,6 +88,9 @@ section {
   margin-top: 5px;
   cursor: pointer;
 }
+#playList ul li:hover {
+  font-weight: bold;
+}
 #playList input,
 #playList label {
   display: inline-block;
@@ -107,6 +110,11 @@ section {
   font-size: 15px;
   padding: 4px;
 }
+.active {
+  font-weight: bolder;
+  color: white;
+}
+
 /* ----- styles for second column  ------ */
 
 button {
@@ -121,6 +129,11 @@ button {
   text-align: center;
   height: 50px;
 }
+
+#btnViewText {
+  font-size: 18px;
+}
+
 #btnClose {
   align-self: center;
 }
@@ -157,4 +170,15 @@ p.direction {
   font-style: italic;
   display: block;
   margin-top: 12px;
+}
+#playHere {
+  overflow-y: scroll;
+}
+/* visibility */
+.visible {
+  display: block;
+}
+
+.hidden {
+  display: none;
 }
