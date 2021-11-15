@@ -1,24 +1,6 @@
 
 const api = 'https://www.randyconnolly.com/funwebdev/3rd/api/shakespeare/play.php';
 const plays = JSON.parse(play_list);
-/*
- To get a specific play, add play's id property (in plays.json) via query string, 
-   e.g., url = url + '?name=hamlet';
- 
- https://www.randyconnolly.com/funwebdev/3rd/api/shakespeare/play.php?name=hamlet
- https://www.randyconnolly.com/funwebdev/3rd/api/shakespeare/play.php?name=jcaesar
- https://www.randyconnolly.com/funwebdev/3rd/api/shakespeare/play.php?name=macbeth
- 
- NOTE: Only a few plays have text available. If the filename property of the play is empty, 
- then there is no play text available.
-*/
- 
-
-/* note: you may get a CORS error if you test this locally (i.e., directly from a
-   local file). To work correctly, this needs to be tested on a local web server.  
-   Some possibilities: if using Visual Code, use Live Server extension; if Brackets,
-   use built-in Live Preview.
-*/
 
 document.addEventListener("DOMContentLoaded", () => {
   const list = document.querySelector("#playList ul");
@@ -105,9 +87,6 @@ document.addEventListener("DOMContentLoaded", () => {
         .catch(error => alert(error));
     } else {
       displayPlay(play);
-      //update drop downs
-  
-      //display text
     }
     
   })
@@ -150,8 +129,18 @@ function updateList(parent){
   })
 }
 
-function displayPlay(play){
-  alert(play);
+function displayPlay(playString){
+  //update Act drop downs
+  const play = JSON.parse(playString);
+  document.querySelector("#interface h2").textContent = play.short;
+  document.querySelector("#playHere h2").textContent = play.title;
+
+  populateActsList(play);
+  populateScenesList(play);
+  populatePlayersList(play, 0, 0);
+  populateAct(play, 0);
+  populateScene(play, 0, 0);
+  
 }
 
 function show(element) {
@@ -162,4 +151,66 @@ function show(element) {
 function hide(element) {
   element.classList.remove("visible");
   element.classList.add("hidden");
+}
+
+function populateActsList(play){
+  const actList = document.querySelector("#actList");
+  play.acts.forEach(a => {
+    const opt = document.createElement("option");
+    //opt.setAttribute("data-id", a.name);
+    opt.textContent = a.name;
+    actList.appendChild(opt);
+  });
+}
+
+function populateScenesList(play){
+  const sceneList = document.querySelector("#sceneList");
+  play.acts[0].scenes.forEach(s => {
+    const opt = document.createElement("option");
+    opt.textContent = s.name;
+    sceneList.appendChild(opt);
+  })
+}
+
+function populatePlayersList(play, act, scene){
+  const playerList = document.querySelector("#playerList");
+  playerList.textContent = ""
+  const all = document.createElement("option");
+  all.setAttribute("value", 0);
+  for(let i=0; i < play.persona.length; i++){
+    const opt = document.createElement("option");
+    opt.setAttribute("value", i+1);
+    opt.textContent = play.persona[i].player;
+    playerList.appendChild(opt);
+  }
+}
+
+function populateAct(play, act){
+  document.querySelector("#actHere h3").textContent = play.acts[act].name;
+}
+
+function populateScene(play, act, scene){
+  document.querySelector("#sceneHere h4").textContent = play.acts[act].scenes[scene].name;
+  document.querySelector("#sceneHere p.title").textContent = play.acts[act].scenes[scene].title;
+  document.querySelector("#sceneHere p.direction").textContent = play.acts[act].scenes[scene].stageDirection;
+  
+  const speeches = document.querySelector("#speeches");
+  speeches.textContent = "";
+  
+  play.acts[act].scenes[scene].speeches.forEach(s => {
+    const speech = document.createElement("div");
+    speech.classList.add("speech");
+    
+    const speaker = document.createElement("span");
+    speaker.textContent = s.speaker;
+    speech.appendChild(speaker);
+    
+    s.lines.forEach(l => {
+      const p = document.createElement("p");
+      p.textContent = l;
+      speech.appendChild(p);
+    });
+    speeches.appendChild(speech);
+  });
+  document.querySelector("#sceneHere").appendChild(speeches);
 }
