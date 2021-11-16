@@ -13,8 +13,16 @@
 <body>
 
 <header>
-   <h1>Assign 2 - Shakespeare Play Viewer</h1>
+   <!--icon: https://fontawesome.com/v5.15/icons/info-circle?style=solid -->
+   <h1>Shakespeare Play Viewer
+      <div id="creditPopup" class="hidden">
+         <h5>Author: Colton Paquette</h5>
+         <h5>COMP 3612: Web Developement for CS</h5>
+      </div>
+      <i id ="credits" class="fas fa-info-circle"></i>
+   </h1>
 </header>
+
 <main>
 
    <section id="playList">
@@ -28,67 +36,65 @@
    </section>
 
    <section id="second-col">
-      <section id="Synopsis" class="visible">
-         <h2>Play title here</h2>
-         <p>Synopsis</p>
-         <button id="btnViewText" class="hidden">View Text</button>
-      </section>
+      <aside id="Synopsis" class="visible">
+         <fieldset class="hidden">
+            <h2></h2>
+            <fieldset>
+               <p></p>
+            </fieldset>
+            <button id="btnViewText" class="hidden">View Text</button>
+         </fieldset>
+      </aside>
 
-      <section id="text-select" class="hidden">
+      <aside id="text-select" class="hidden">
          <fieldset id="interface">
-            <h2>Play title here</h2>
+            <h2></h2>
             <select id="actList"></select>
             <select id="sceneList"></select>      
             <fieldset>
                <select id="playerList">
-                  <option value=0>All Players</option>
                </select>      
-            
                <input type="text" id="txtHighlight" placeholder="Enter a search term"/>
                <button id="btnHighlight" >Filter</button>
             </fieldset>
             <button id="btnClose" >Close</button>
-         </section>
+         </fieldset>
       </aside>
    </section>
 
    <section id="third-col">
-      <section id="playInfo" class="visible">
-         <span>
-            <h3>Likely Date of Compostion:</h3>
+      <div id="playInfo" class="visible">
+         <h3>Select a play to see details</h3>
+         <div id="details" class="hidden">
+            <h4>Likely date of composition:</h4>
             <p id="DoC"></p>
-         </span>
-         <p id="genre"></p>
-         <p id="wiki"></p>
-         <p id="gutenberg"></p>
-         <p id="shakespeareOrg"></p>
-         <p id="description"></p>
-      </section>
+            <h4>Genre:</h4>      
+            <p id="genre"></p>
+            <h4>Description:</h4>
+            <p id="description"></p>
+            <h4>Links:</h4>
+            <p><a id="wiki"></a></p>
+            <p><a id="gutenberg"></a></p>
+            <p><a id="shakespeareOrg"></a></p>
+         </div>
+      </div>
 
-      <section id="PlayText" class="hidden">
-         <section id="playHere">
-            <!-- Note you will need to remove or comment out some of this markup; 
-                  it is there to show you the markup that your javascript will need to generate.
-            -->   
-            <h2>Play title here</h2>
+      <div id="PlayText" class="hidden">
+         <div id="playHere">   
+            <h2></h2>
             <article id="actHere">
-               <h3>Act name here</h3>
+               <h3></h3>
                <div id="sceneHere">
-                  <h4>Scene name here</h4>
-                  <p class="title">scene title</p>
-                  <p class="direction">stage direction</p>
+                  <h4></h4>
+                  <p class="title"></p>
+                  <p class="direction"></p>
                   <div id="speeches">
-                     <!-- <div class="speech"><span>BERNARDO</span><p>Who's there?</p></div>		
-                     <div class="speech"><span>FRANCISCO</span><p>Nay, answer me: <b>stand</b>, and unfold yourself.</p></div>		
-                     <div class="speech"><span>MARCELLUS</span><p>'Tis gone!</p><p>We do it wrong, being so majestical,</p><p>To offer it the show of violence;</p><p>For it is, as the air, invulnerable,</p><p>And our vain blows malicious mockery.</p><em>Exit Ghost</em></div>         
-                     <div class="speech"><span>BERNARDO</span><p>Who's there?</p></div>		
-                     <div class="speech"><span>FRANCISCO</span><p>Nay, answer me: <b>stand</b>, and unfold yourself.</p></div>		
-                     <div class="speech"><span>MARCELLUS</span><p>'Tis gone!</p><p>We do it wrong, being so majestical,</p><p>To offer it the show of violence;</p><p>For it is, as the air, invulnerable,</p><p>And our vain blows malicious mockery.</p><em>Exit Ghost</em></div> -->
                   </div>
                </div>
             </article>
-         </section>
-   </section>      
+         </div>
+      </div>
+   </section>   
 </main>
    
 </body>
