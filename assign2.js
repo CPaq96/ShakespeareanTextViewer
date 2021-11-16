@@ -290,7 +290,8 @@ function filterText(play, act, scene){
   } else {
     // Display selected players' speeches, highlight provided term
     play.acts[act].scenes[scene].speeches.forEach(s => {
-      if(s.speaker === play.persona[player].player) populateFilteredSpeech(s, txt, regexp)
+      if(s.speaker.includes(play.persona[player].player) || play.persona[player].player.includes(s.speaker))
+        populateFilteredSpeech(s, txt, regexp)
     });
     document.querySelector("#sceneHere").appendChild(speeches);
   }
