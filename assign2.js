@@ -248,13 +248,12 @@ function changeAct(act, play){
 function filterText(play, act, scene){
   const player = document.querySelector("#playerList").value - 1;
   const txt = document.querySelector("#txtHighlight").value;
-  const regexp = new RegExp(txt);
+  const regexp = new RegExp(txt, 'i');
   const b = document.createElement("b");
   b.textContent = txt;
 
   const speeches = document.querySelector("#speeches");
   speeches.textContent = "";
-
   if(player < 0){
     // highlight all players w/ filtered text
     play.acts[act].scenes[scene].speeches.forEach(s => {
@@ -268,7 +267,7 @@ function filterText(play, act, scene){
       s.lines.forEach(l => {
         const p = document.createElement("p");
         p.textContent = l;
-        //p.textContent.replace(regexp, b);
+        if(txt != ""){p.innerHTML = p.innerHTML.replace(regexp, `<b>${txt}</b>`);}
         speech.appendChild(p);
       });
       speeches.appendChild(speech);
@@ -288,7 +287,7 @@ function filterText(play, act, scene){
         s.lines.forEach(l => {
           const p = document.createElement("p");
           p.textContent = l;
-          //p.textContent.replace(regexp, b);
+          if(txt != ""){p.innerHTML = p.innerHTML.replace(regexp, `<b>${txt}</b>`);}
           speech.appendChild(p);
         });
         speeches.appendChild(speech);
@@ -296,8 +295,4 @@ function filterText(play, act, scene){
     });
     document.querySelector("#sceneHere").appendChild(speeches);
   }
-}
-
-function hightlight(txt) {
-
 }
