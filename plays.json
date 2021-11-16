@@ -124,7 +124,7 @@ const play_list = `
    {
      "id": "henry_vi_part_1", 
      "filename": "",
-     "title": "Henry VI Part 1",
+     "title": "Henry VI, Part 1",
      "likelyDate": "1591",
 	 "genre" : "history",
      "wiki": "https://en.wikipedia.org/wiki/Henry_VI,_Part_1",
@@ -136,7 +136,7 @@ const play_list = `
    {
      "id": "henry_vi_part_2", 
      "filename": "",
-     "title": "Henry VI Part 2",
+     "title": "Henry VI, Part 2",
      "likelyDate": "1591",
 	 "genre" : "history",
      "wiki": "https://en.wikipedia.org/wiki/Henry_VI,_Part_2",
@@ -148,7 +148,7 @@ const play_list = `
    {
      "id": "henry_vi_part_3",
      "filename": "", 
-     "title": "Henry VI Part 3",
+     "title": "Henry VI, Part 3",
      "likelyDate": "1591",
 	 "genre" : "history",
      "wiki": "https://en.wikipedia.org/wiki/Henry_VI,_Part_3",

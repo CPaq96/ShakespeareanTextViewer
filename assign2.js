@@ -88,7 +88,14 @@ document.addEventListener("DOMContentLoaded", () => {
     } else {
       displayPlay(play);
     }
-    
+  });
+
+  const closeBtn = document.querySelector("#btnClose");
+  closeBtn.addEventListener("click", () => {
+    hide(textSelect);
+    hide(playText);
+    show(synopsisInfo);
+    show(playInfo);
   })
 });
 
@@ -130,17 +137,25 @@ function updateList(parent){
 }
 
 function displayPlay(playString){
-  //update Act drop downs
   const play = JSON.parse(playString);
   document.querySelector("#interface h2").textContent = play.short;
   document.querySelector("#playHere h2").textContent = play.title;
 
+  // initially display act 1, scene 1.
   populateActsList(play);
-  populateScenesList(play);
-  populatePlayersList(play, 0, 0);
+  populateScenesList(play, 0);
+  populatePlayersList(play);
   populateAct(play, 0);
   populateScene(play, 0, 0);
-  
+
+  //listen for act change => on change, reload scenes + players
+  const act = document.querySelector("#actList");
+  act.addEventListener("change", (e) => changeAct(e.target.value, play));
+  const scene = document.querySelector("#sceneList");
+
+  scene.addEventListener("change", (e) => populateScene(play, act.value, e.target.value));
+
+  document.querySelector("#btnHighlight").addEventListener("click", () => filterText(play, act.value, scene.value));
 }
 
 function show(element) {
@@ -155,28 +170,36 @@ function hide(element) {
 
 function populateActsList(play){
   const actList = document.querySelector("#actList");
+  actList.textContent = "";
+  let i = 0;
   play.acts.forEach(a => {
     const opt = document.createElement("option");
-    //opt.setAttribute("data-id", a.name);
+    opt.setAttribute("value", i++);
     opt.textContent = a.name;
     actList.appendChild(opt);
   });
 }
 
-function populateScenesList(play){
+function populateScenesList(play, act){
   const sceneList = document.querySelector("#sceneList");
-  play.acts[0].scenes.forEach(s => {
+  sceneList.textContent = "";
+  let i = 0;
+  play.acts[act].scenes.forEach(s => {
     const opt = document.createElement("option");
+    opt.setAttribute("value", i++);
     opt.textContent = s.name;
     sceneList.appendChild(opt);
   })
 }
 
-function populatePlayersList(play, act, scene){
+function populatePlayersList(play){
   const playerList = document.querySelector("#playerList");
   playerList.textContent = ""
   const all = document.createElement("option");
   all.setAttribute("value", 0);
+  all.textContent = "All Players"
+  playerList.appendChild(all);
+
   for(let i=0; i < play.persona.length; i++){
     const opt = document.createElement("option");
     opt.setAttribute("value", i+1);
@@ -213,4 +236,68 @@ function populateScene(play, act, scene){
     speeches.appendChild(speech);
   });
   document.querySelector("#sceneHere").appendChild(speeches);
+}
+
+function changeAct(act, play){
+  populateAct(play, act);
+  document.querySelector("#sceneList").selectedIndex = 0;
+  populateScenesList(play, act);
+  populateScene(play, act, 0);
+}
+
+function filterText(play, act, scene){
+  const player = document.querySelector("#playerList").value - 1;
+  const txt = document.querySelector("#txtHighlight").value;
+  const regexp = new RegExp(txt);
+  const b = document.createElement("b");
+  b.textContent = txt;
+
+  const speeches = document.querySelector("#speeches");
+  speeches.textContent = "";
+
+  if(player < 0){
+    // highlight all players w/ filtered text
+    play.acts[act].scenes[scene].speeches.forEach(s => {
+      const speech = document.createElement("div");
+      speech.classList.add("speech");
+
+      const speaker = document.createElement("span");
+      speaker.textContent = s.speaker;
+      speech.appendChild(speaker);
+      
+      s.lines.forEach(l => {
+        const p = document.createElement("p");
+        p.textContent = l;
+        //p.textContent.replace(regexp, b);
+        speech.appendChild(p);
+      });
+      speeches.appendChild(speech);
+    })
+    document.querySelector("#sceneHere").appendChild(speeches);
+  } else {
+    // edit find player speeches, highlight text
+    play.acts[act].scenes[scene].speeches.forEach(s => {
+      if(s.speaker === play.persona[player].player) {
+        const speech = document.createElement("div");
+        speech.classList.add("speech");
+
+        const speaker = document.createElement("span");
+        speaker.textContent = s.speaker;
+        speech.appendChild(speaker);
+        
+        s.lines.forEach(l => {
+          const p = document.createElement("p");
+          p.textContent = l;
+          //p.textContent.replace(regexp, b);
+          speech.appendChild(p);
+        });
+        speeches.appendChild(speech);
+      }
+    });
+    document.querySelector("#sceneHere").appendChild(speeches);
+  }
+}
+
+function hightlight(txt) {
+
 }
